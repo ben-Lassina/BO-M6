@@ -8,7 +8,7 @@ long unsigned int lowIn;
 //Voordat we aannemen dat alles al gestopt is zetten we hier nog een pauze van 5 secondes
 long unsigned int pause = 5000;  
 
-boolean lockLow = true;
+boolean lockLow = false;
 boolean takeLowTime;  
 
 int pirPin = 3;    //the digital pin gekoppeld aan de PIR sensor's output
@@ -23,6 +23,7 @@ void setup(){
   pinMode(pirPin, INPUT);
   pinMode(ledPin, OUTPUT);
   digitalWrite(pirPin, LOW);
+  digitalWrite(ledPin, LOW);
 
   //De sensor de tijd nemen on aan te passen/calibrate
   Serial.print("calibrating sensor ");
