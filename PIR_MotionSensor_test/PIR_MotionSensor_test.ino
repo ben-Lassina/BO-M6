@@ -5,8 +5,9 @@ int calibrationTime = 30;
 long unsigned int lowIn;         
 
 //De tijd dat de sensor op low staat in millisecondes
-//Voordat we aannemen dat alles al gestopt is zetten we hier nog een pauze van 5 secondes
-long unsigned int pause = 5000;  
+//Voordat we aannemen dat alles al gestopt is zetten we hier nog een pauze van 3 secondes
+//om te checken of er nog motion wordt gedetecteerd
+long unsigned int pause = 0;  
 
 boolean lockLow = false;
 boolean takeLowTime;  
@@ -19,7 +20,7 @@ int ledPin = 13;   //De pin waar het ledlampje aan gekoppeld is
 //en het ledlampje de output
 //SETUP
 void setup(){
-  Serial.begin(9600);
+  Serial.begin(115200);
   pinMode(pirPin, INPUT);
   pinMode(ledPin, OUTPUT);
   digitalWrite(pirPin, LOW);
