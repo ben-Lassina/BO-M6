@@ -1,0 +1,11 @@
+CREATE SCHEMA IF NOT EXISTS BOfoto;
+USE BOfoto;
+
+CREATE TABLE Foto
+(
+    FotoID INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    photoname VARCHAR(255),
+    tijd DATETIME,
+    grootte DECIMAL,
+    PRIMARY KEY (FotoID)
+);
