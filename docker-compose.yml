@@ -1,0 +1,58 @@
+version: '3.9'
+
+# Services
+services:
+
+  # PHP FPM Service
+  php:
+    build:
+      dockerfile: ./docker/php/dockerfile
+      context: .
+    environment:
+      SSMTP_MAILHUB: mailhog:1025
+      PHP_SENDMAIL_PATH: '"/usr/bin/dos2unix -u | /usr/sbin/ssmtp -t -f"'
+    image: wodby/php:latest
+    volumes:
+      - './:/var/www/html'
+    depends_on:
+      - mariadb
+
+  # Nginx Service
+  nginx:
+    image: nginx:latest
+    ports:
+      - 8081:80
+    links:
+      - 'php'
+    volumes:
+      - './:/var/www/html'
+      - './docker/nginx:/etc/nginx/conf.d'
+    depends_on:
+      - php
+
+  # MariaDB Service
+  mariadb:
+    image: mariadb:latest
+    environment:
+      MYSQL_DATABASE: m6prog
+      MYSQL_USER: db_user
+      MYSQL_PASSWORD: mijn_p@ss#
+      MYSQL_ROOT_PASSWORD: 4dy5qwtrsag#!sad
+    ports:
+      - 3310:3306
+    volumes:
+      - './docker/mysqldata:/var/lib/mysql'
+
+  # php myadmin in an external image
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      PMA_HOST: mariadb
+      PMA_USER: root
+      PMA_PASSWORD: '4dy5qwtrsag#!sad'
+    ports:
+      - "8088:80"
+
+# Volumes
+volumes:
+  mysqldata:
