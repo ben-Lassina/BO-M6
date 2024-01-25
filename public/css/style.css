@@ -52,6 +52,7 @@ body{
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
+    background-color: #1e1e1e;
 }
 
 .fotosfigure{
@@ -67,6 +68,7 @@ body{
     object-fit: cover;
     width: 100%;
     height: 100%;
+    background-color: #1e1e1e;
 }
 
 @media screen and (max-width:950px){
