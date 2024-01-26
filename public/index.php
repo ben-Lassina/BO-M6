@@ -27,24 +27,20 @@
 </html>
 
 <?php
-// Open the serial port for communication with Arduino
 $serial = fopen($serialPort, "r");
 
-// Check if serial port opened successfully
 if (!$serial) {
     die("Failed to open serial port");
 }
 
-// Read the incoming image data from the serial port
 $imageData = fread($serial, 5000);
 
-// Close the serial port
 fclose($serial);
 
-$file = fopen("image.jpg", "wb"); // Open the file for writing in binary mode
+$file = fopen("image.jpg", "wb");
 if ($file) {
-    fwrite($file, $imageData); // Write the image data to the file
-    fclose($file); // Close the file
+    fwrite($file, $imageData);
+    fclose($file);
     echo "Image received and saved successfully";
 } else {
     echo "Failed to save image";
