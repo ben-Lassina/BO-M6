@@ -21,12 +21,41 @@
             <figure class="fotosfigure">
                 <img src="img/test-img.webp" alt="" class="fotosimg">
             </figure>
+            <figure class="fotosfigure">
+                <img src="img/test-img.webp" alt="" class="fotosimg">
+            </figure>
         </section>
     </article>
 </body>
 </html>
 
 <?php
+include_once "../source/config.php";
+include_once "../source/database.php";
+
+// Establish database connection using defined constants
+$conn = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_SCHEMA);
+
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+$sql = "SELECT image_url FROM images";
+$result = mysqli_query($conn, $sql);
+
+if (mysqli_num_rows($result) > 0) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        echo "<img src='" . $row['image_url'] . "' alt=''>";
+    }
+} else {
+    echo "No images found";
+}
+
+mysqli_close($conn);
+
+// Define $serialPort before using it
+$serialPort = "/dev/ttyS0"; // Example, replace with your actual serial port
+
 $serial = fopen($serialPort, "r");
 
 if (!$serial) {
@@ -45,3 +74,4 @@ if ($file) {
 } else {
     echo "Failed to save image";
 }
+?>
