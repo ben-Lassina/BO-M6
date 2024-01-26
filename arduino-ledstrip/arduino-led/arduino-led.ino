@@ -1,5 +1,4 @@
 #include <ArduCAM.h>
-#include <IRremote.hpp>
 #include <Adafruit_NeoPixel.h>
 
 #define LED_COUNT 100
@@ -30,6 +29,7 @@ void setup() {
   pinMode(ECHO_PIN, INPUT);
   pinMode(BUTTON_PIN, INPUT_PULLUP); // Button pin as input with internal pull-up resistor
   pinMode(SPEAKER_PIN, OUTPUT);
+  Serial.begin(9600); // Start serial communication
 }
 
 void loop() {
@@ -48,6 +48,7 @@ void loop() {
     leds.setBrightness(brightness);
     colorWipe(leds.Color(213, 174, 23), 50);
     playSound(); // Play sound when motion is detected
+    captureImage(); // Capture image when motion is detected
   } else {
     // If no one is within 50cm, turn off the LEDs
     clearLEDs();
@@ -79,6 +80,9 @@ void colorWipe(uint32_t color, int wait) {
 
 void captureImage() {
   // Code to capture image from camera module
+  // Placeholder code to send image data over Serial (replace with actual implementation)
+  byte imageData[5000]; // Assuming you have the image data stored in an array
+  Serial.write(imageData, 5000); // Send image data over Serial
 }
 
 void playSound() {
