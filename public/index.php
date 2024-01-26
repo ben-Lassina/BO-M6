@@ -27,6 +27,7 @@
 </html>
 
 <?php
+//arduino
 $serial = fopen($serialPort, "r");
 
 if (!$serial) {
