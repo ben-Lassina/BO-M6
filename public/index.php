@@ -25,3 +25,23 @@
     </article>
 </body>
 </html>
+
+<?php
+$serial = fopen($serialPort, "r");
+
+if (!$serial) {
+    die("Failed to open serial port");
+}
+
+$imageData = fread($serial, 5000);
+
+fclose($serial);
+
+$file = fopen("image.jpg", "wb");
+if ($file) {
+    fwrite($file, $imageData);
+    fclose($file);
+    echo "Image received and saved successfully";
+} else {
+    echo "Failed to save image";
+}
