@@ -9,3 +9,5 @@ CREATE TABLE Foto
     grootte DECIMAL,
     PRIMARY KEY (FotoID)
 );
+
+DELETE FROM Foto WHERE TIMESTAMPDIFF(MINUTE, timestamp, NOW()) >= 3;
