@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="/js/photo.js" defer></script>
+</head>
+<body>
+
+    <div>
+        <video id="camera">Video stream is not available</video>
+            <canvas id="canvas"></canvas>   
+    </div>
+    
+</body>
+</html>

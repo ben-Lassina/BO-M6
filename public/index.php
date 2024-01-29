@@ -27,6 +27,7 @@
 </html>
 
 <?php
+include "../source/database.php";
 //arduino
 $serial = fopen($serialPort, "r");
 
