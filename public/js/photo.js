@@ -18,7 +18,7 @@ function Setup() {
             // canvas.style.height = height + "px";
             canvas.style.backgroundColor = 'green';
 
-            // wanneer je klikt op het groene canvas maak je een fot
+            // wanneer je klikt op het groene canvas maak je een foto
             video = document.getElementById('camera');
             document.addEventListener('click', TakePhoto);
 
@@ -29,7 +29,7 @@ function Setup() {
                     video.srcObject = stream;
                     video.play();
                 }).catch((error)=>{
-                    console.error(`Error obtaoning video stream:\n$(error)`)
+                    console.error(`Error obtaining video stream:\n$(error)`)
                 })
 
         isSetup != isSetup
