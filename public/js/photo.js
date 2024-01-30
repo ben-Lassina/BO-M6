@@ -9,30 +9,25 @@ let video = null, isSetup = false;
 Setup();
 
 function Setup() {
-    // if setup false als default, van lijn 5
-    if(!isSetup) {
-            canvas.width = width;
-            canvas.height = height;
-            //geen css aanmaken
-            canvas.style.width = `$[width]px`;
-            canvas.style.height = `$[height]px`;
-            // het kan ook zo:
-            // canvas.style.height = height + "px";
-            canvas.style.backgroundColor = 'green';
+    if (!isSetup) {
+        canvas.width = width;
+        canvas.height = height;
+        canvas.style.width = `${width}px`;
+        canvas.style.height = `${height}px`;
+        canvas.style.backgroundColor = 'green';
 
-            // wanneer je klikt op het groene canvas maak je een foto
-            video = document.getElementById('camera');
-            document.addEventListener('click', TakePhoto);
+        video = document.getElementById('camera');
+        document.addEventListener('click', TakePhoto);
 
-            // pak video
-            navigator.mediaDevices
-                .getUserMedia({video: true, audio: false})
-                .then((stream)=>{
-                    video.srcObject = stream;
-                    video.play();
-                }).catch((error)=>{
-                    console.error(`Error obtaining video stream:\n$(error)`)
-                })
+        navigator.mediaDevices
+            .getUserMedia({video: true, audio: false})
+            .then((stream) => {
+                video.srcObject = stream;
+                video.play();
+            })
+            .catch((error) => {
+                console.error(`Error obtaining video stream:\n${error}`);
+            });
 
         isSetup = true;
     }
@@ -41,4 +36,35 @@ function Setup() {
 function TakePhoto(e) {
     e.preventDefault();
     ctx.drawImage(video, 0, 0, width, height);
+    const imageData = canvas.toDataURL('image/png');
+
+    let formData = new FormData();
+    formData.append('imageData', imageData);
+
+    let options = {
+        method: 'POST',
+        body: formData
+    };
+
+    fetch('imagerecieve.php', options)
+    .then(async (response) => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then((data) => {
+        if (data.success) {
+            console.log('Photo saved successfully.');
+            downloadLink.href = data.photoURL;
+            downloadLink.style.display = 'block';
+            downloadLink.setAttribute('download', 'photo.png');
+        } else {
+            console.error('Failed to save photo.');
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
 }
+
