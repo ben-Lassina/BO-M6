@@ -41,30 +41,35 @@ function TakePhoto(e) {
     let formData = new FormData();
     formData.append('imageData', imageData);
 
-    let options = {
-        method: 'POST',
-        body: formData
+    let options = 
+    {
+        method: "POST",
+        cache: "no-cache",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
     };
+    
 
     fetch('imagerecieve.php', options)
-    .then(async (response) => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then((data) => {
-        if (data.success) {
-            console.log('Photo saved successfully.');
-            downloadLink.href = data.photoURL;
-            downloadLink.style.display = 'block';
-            downloadLink.setAttribute('download', 'photo.png');
-        } else {
-            console.error('Failed to save photo.');
-        }
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
+        .then(async (response) => {
+            console.log(response) 
+            let json = await response.json()
+            console.log(json)
+        })
+        .then((data) => {
+            if (data.success) {
+                console.log('Photo saved successfully.');
+                downloadLink.href = data.photoURL;
+                downloadLink.style.display = 'block';
+                downloadLink.setAttribute('download', 'photo.png');
+            } else {
+                console.error('Failed to save photo.');
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
 }
 
