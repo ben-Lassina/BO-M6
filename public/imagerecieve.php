@@ -1,14 +1,19 @@
 <?php
 include '../source/database.php';
 include_once '../source/config.php';
+$post = file_get_contents('php://input');
+var_dump($post);
+var_dump($post->imageData);
+$post = str_replace('data:image/png;base64,', '', $post['imageData']);
+DIE();
 
-if (!isset($_POST['imageData'])) {
+if (!isset($post['imageData'])) {
     $response = ["succeeded" => false, "message" => "No image data received.", "downloadlink" => null];
     echo json_encode($response);
     exit;
 }
 
-$imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $_POST['imageData']));
+$imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $post['imageData']));
 
 $filename = '../uploads/photo.png';
 if (!file_put_contents($filename, $imageData)) {

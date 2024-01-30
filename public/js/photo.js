@@ -37,9 +37,9 @@ function TakePhoto(e) {
     e.preventDefault();
     ctx.drawImage(video, 0, 0, width, height);
     const imageData = canvas.toDataURL('image/png');
-
     let formData = new FormData();
     formData.append('imageData', imageData);
+    console.log(formData)
 
     let options = 
     {
@@ -48,12 +48,13 @@ function TakePhoto(e) {
         headers: {
             "Content-Type": "application/json"
         },
-        body: JSON.stringify(formData)
+        body:JSON.stringify( formData)
     };
     
 
     fetch('imagerecieve.php', options)
     .then(async (response) => {
+        console.log(response);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
@@ -64,6 +65,7 @@ function TakePhoto(e) {
             downloadLink.style.display = 'block';
             downloadLink.setAttribute('download', 'photo.png');
         } else {
+            console.log(json);
             console.error('Failed to save photo.');
         }
     })
