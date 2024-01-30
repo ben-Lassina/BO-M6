@@ -53,23 +53,23 @@ function TakePhoto(e) {
     
 
     fetch('imagerecieve.php', options)
-        .then(async (response) => {
-            console.log(response) 
-            let json = await response.json()
-            console.log(json)
-        })
-        .then((data) => {
-            if (data.success) {
-                console.log('Photo saved successfully.');
-                downloadLink.href = data.photoURL;
-                downloadLink.style.display = 'block';
-                downloadLink.setAttribute('download', 'photo.png');
-            } else {
-                console.error('Failed to save photo.');
-            }
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
+    .then(async (response) => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const json = await response.json();
+        if (json.success) {
+            console.log('Photo saved successfully.');
+            downloadLink.href = json.downloadlink;
+            downloadLink.style.display = 'block';
+            downloadLink.setAttribute('download', 'photo.png');
+        } else {
+            console.error('Failed to save photo.');
+        }
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+
 }
 
