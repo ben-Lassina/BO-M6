@@ -17,41 +17,41 @@ if (!file_put_contents($filename, $imageData)) {
     exit;
 }
 
-function insertImageInDb($conn, $FotoID, $photoname, $tijd, $grootte)
+function insertImageInDb($conn, $photoname, $tijd, $grootte)
 {
-    $q = "INSERT INTO BOfoto (FotoID, photoname, tijd, grootte) VALUES (?, ?, ?, ?)";
+    $q = "INSERT INTO BOfoto (photoname, tijd, grootte) VALUES (?, ?, ?)";
     $stmt = $conn->prepare($q);
 
     if ($stmt) {
-        $stmt->bind_param("isiss",
-            $FotoID->FotoID,
-            $photoname->photoname,
-            $tijd->tijd,
-            $grootte->grootte,
-        );
-
+        $stmt->bind_param("sss", $photoname, $tijd, $grootte);
         $result = $stmt->execute();
         
         if ($result) {
-            $response = ["succeeded" => true, "message" => "Image inserted into database successfully.", "downloadlink" => null];
+            $FotoID = $stmt->insert_id;
+            $response = ["succeeded" => true, "message" => "Image inserted into database successfully.", "downloadlink" => createLink($FotoID)];
         } else {
             $response = ["succeeded" => false, "message" => "Failed to insert image into database.", "downloadlink" => null];
         }
 
         $stmt->close();
     } else {
-        $response = ["succeeded" => false, "message" => "Error in the prepared statement for data insertion.", "downloadlink" => null];
+        $response = ["succeeded" => false, "message" => " ", "downloadlink" => null];
     }
 
     return $response;
 }
 
-$FotoID = "example_ID";
+function createLink($FotoID)
+{
+    $link = "http://" . $_SERVER['HTTP_HOST'] . "/imagedownload.php?link=$FotoID"; // Assuming HTTP, change to HTTPS if necessary
+    return $link;
+}
+
 $photoname = "example_photoname";
 $tijd = "example_timestamp";
 $grootte = "example_size";
 
-$insertResult = insertImageInDb($conn, $FotoID, $photoname, $tijd, $grootte);
+$insertResult = insertImageInDb($conn, $photoname, $tijd, $grootte);
 
 $conn->close();
 
